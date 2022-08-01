@@ -1,4 +1,4 @@
-module nsfw
+module github.com/ccuetoh/nsfw
 
 go 1.18
 
