@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"nsfw"
+	
+	"github.com/ccuetoh/nsfw"
 
 	"github.com/sirupsen/logrus"
 )
