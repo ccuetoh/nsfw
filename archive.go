@@ -22,7 +22,7 @@ func GetLocalModelPath() (Path, error) {
 }
 
 func GetLatestModelPath() (Path, error) {
-	logrus.Info("Fetching latest release info fom repository")
+	logrus.Info("Fetching latest release info form repository")
 	latest, err := getLatestReleaseInfo()
 	if err != nil {
 		return "", err
