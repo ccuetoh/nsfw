@@ -27,7 +27,6 @@ type Prediction struct {
 
 func NewPredictor(model *tg.Model) *Predictor {
 	return &Predictor{
-		scope: tg.NewRoot(),
 		model: model,
 	}
 }
@@ -41,12 +40,26 @@ func NewLatestPredictor() (*Predictor, error) {
 	return NewPredictor(path.GetModel()), nil
 }
 
+func (p *Predictor) UseScope(s *op.Scope) {
+	p.scope = s
+}
+
+func (p *Predictor) setupScope() {
+	if p.scope != nil || p.scope.Err() != nil {
+		p.scope = tg.NewRoot()
+	}
+}
+
 func (p *Predictor) NewImage(filepath string, channels int64) *image.Image {
+	p.setupScope()
+
 	return image.Read(p.scope, filepath, channels).
 		ResizeArea(image.Size{Height: ImageDimensions, Width: ImageDimensions})
 }
 
 func (p *Predictor) Predict(img *image.Image) Prediction {
+	p.setupScope()
+
 	preprocess := tg.Exec(p.scope, []tf.Output{img.Output}, nil, nil)
 
 	results := p.model.Exec([]tf.Output{
