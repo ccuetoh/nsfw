@@ -45,7 +45,12 @@ func (p *Predictor) UseScope(s *op.Scope) {
 }
 
 func (p *Predictor) setupScope() {
-	if p.scope != nil || p.scope.Err() != nil {
+	if p.scope == nil {
+		p.scope = tg.NewRoot()
+		return
+	}
+
+	if p.scope.Err() != nil {
 		p.scope = tg.NewRoot()
 	}
 }
